@@ -1,0 +1,544 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>XBhabhi — Creator Demo</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#090909;color:#f5f5f5;font-family:Arial,Helvetica,sans-serif}
+header{display:flex;align-items:center;gap:12px;padding:12px 15px;position:sticky;top:0;background:#090909;border-bottom:1px solid #2c2c2c;z-index:4}
+.logo{font-weight:900;font-size:22px;white-space:nowrap}
+.logo span{background:#fff;color:#000;padding:2px 4px;border-radius:3px}
+button,input,textarea,select{font:inherit}
+button{cursor:pointer;color:#fff;background:#242424;border:1px solid #3a3a3a;border-radius:8px;padding:9px 12px}
+button:hover{background:#333}
+.search{display:flex;flex:1;max-width:650px;margin:auto}
+.search input{min-width:0;flex:1;padding:10px;border:1px solid #393939;background:#181818;color:white;border-radius:8px 0 0 8px}
+.search button{border-radius:0 8px 8px 0}
+main{max-width:1200px;margin:auto;padding:16px}
+.nav{display:flex;gap:8px;overflow:auto;margin-bottom:18px}
+.nav button{white-space:nowrap}
+.nav button.active{background:#fff;color:#000}
+.hero{padding:20px;border:1px solid #333;border-radius:12px;background:linear-gradient(120deg,#292929,#111);margin-bottom:18px}
+.hero h1{margin:0 0 8px;font-size:26px}
+.hero p{margin:0;color:#bbb;line-height:1.5}
+.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.video-card{border:1px solid #292929;border-radius:10px;overflow:hidden;background:#131313}
+.preview{aspect-ratio:16/9;background:linear-gradient(135deg,#353535,#151515);display:grid;place-items:center;color:#888;position:relative}
+.preview video{width:100%;height:100%;object-fit:cover}
+.preview .play{font-size:26px}
+.details{padding:10px}
+.details strong{display:block;font-size:14px;line-height:1.4}
+.details small{color:#999;display:block;margin-top:5px}
+.actions{display:flex;gap:6px;margin-top:9px;flex-wrap:wrap}
+.actions button{padding:6px 9px;font-size:12px}
+.panel{max-width:620px;margin:10px auto;background:#151515;border:1px solid #333;border-radius:12px;padding:18px}
+.panel h2{margin-top:0}
+.field{display:grid;gap:6px;margin:12px 0}
+.field label{color:#bbb;font-size:13px}
+.field input,.field textarea,.field select{width:100%;background:#090909;color:white;border:1px solid #393939;border-radius:8px;padding:10px}
+.field textarea{min-height:80px;resize:vertical}
+.row{display:flex;gap:9px;flex-wrap:wrap}
+.row>*{flex:1}
+.muted{color:#999;font-size:13px;line-height:1.5}
+.notice{border:1px solid #444;padding:10px;border-radius:8px;color:#aaa;font-size:12px;margin-top:12px}
+.empty{padding:35px;text-align:center;color:#999}
+.profilehead{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+.avatar{width:54px;height:54px;border-radius:50%;background:#333;display:grid;place-items:center;font-weight:bold;font-size:20px}
+.tag{display:inline-block;border:1px solid #444;border-radius:99px;padding:3px 8px;font-size:11px;color:#aaa;margin-top:6px}
+footer{text-align:center;color:#777;border-top:1px solid #292929;padding:18px;font-size:12px}
+
+html,body{width:100%;max-width:100%;overflow-x:hidden}
+header{width:100%;min-width:0;flex-wrap:wrap}
+.logo{flex-shrink:0}
+.search{min-width:0;width:100%;max-width:none;order:3;flex:1 1 100%}
+.search input{width:0;min-width:0}
+#accountArea{flex-shrink:0}
+main{width:100%;max-width:1200px;min-width:0}
+.nav{max-width:100%;scrollbar-width:thin}
+.grid{width:100%;min-width:0}
+.video-card,.details,.panel,.field{min-width:0;max-width:100%}
+.field input,.field textarea,.field select{width:100%;max-width:100%;min-width:0}
+.field input[type=file]{font-size:13px;overflow:hidden}
+.row button{min-width:120px}
+.preview{min-width:0}
+
+@media(max-width:900px){
+.grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+
+@media(max-width:600px){
+header{padding:9px 10px;gap:8px}
+.logo{font-size:19px}
+#accountArea button{font-size:12px;padding:8px}
+.search{order:3;flex-basis:100%;margin:0}
+main{padding:10px}
+.nav{gap:6px;margin:0 -1px 14px}
+.nav button{padding:8px 11px;font-size:13px}
+.hero{padding:14px;border-radius:10px}
+.hero h1{font-size:21px}
+.hero p{font-size:13px}
+.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.video-card{border-radius:8px}
+.details{padding:8px}
+.details strong{font-size:13px;overflow-wrap:anywhere}
+.details small{font-size:11px;overflow-wrap:anywhere}
+.actions{gap:5px}
+.actions button{font-size:11px;padding:6px 7px}
+.panel{padding:13px;margin:8px 0;border-radius:10px}
+.panel h2{font-size:20px}
+.field{margin:10px 0}
+.field label{font-size:12px}
+.field input,.field textarea,.field select{padding:10px;font-size:16px}
+.row{display:grid;grid-template-columns:1fr 1fr}
+.row button{width:100%;min-width:0}
+.notice{font-size:11px;overflow-wrap:anywhere}
+}
+
+@media(max-width:360px){
+.grid{grid-template-columns:1fr}
+.logo{font-size:17px}
+#accountArea button{padding:7px;font-size:11px}
+.hero h1{font-size:19px}
+.nav button{padding:7px 9px}
+}
+</style>
+</head>
+
+<body>
+<header>
+<div class="logo">XB<span>HABHI</span></div>
+
+<form class="search" onsubmit="doSearch(event)">
+<input id="search" placeholder="Search videos or creators">
+<button>⌕</button>
+</form>
+
+<div id="accountArea">
+<button onclick="showAuth()">Login / Sign up</button>
+</div>
+</header>
+
+<main>
+<div class="nav">
+<button class="active" onclick="view('home',this)">Home</button>
+<button onclick="view('upload',this)">＋ Upload</button>
+<button onclick="view('profile',this)">My Profile</button>
+<button onclick="view('myvideos',this)">My Videos</button>
+</div>
+
+<div id="app"></div>
+</main>
+
+<footer>Creator feature prototype · Local demo only</footer>
+
+<script>
+const DB_NAME='xb_creator_demo';
+const STORE='videos';
+
+let currentUser=null;
+let activeSearch='';
+const app=document.getElementById('app');
+
+function dbOpen(){
+return new Promise((res,rej)=>{
+let r=indexedDB.open(DB_NAME,1);
+r.onupgradeneeded=()=>r.result.createObjectStore(STORE,{keyPath:'id'});
+r.onsuccess=()=>res(r.result);
+r.onerror=()=>rej(r.error);
+});
+}
+
+async function dbAll(){
+let d=await dbOpen();
+return new Promise((res,rej)=>{
+let r=d.transaction(STORE,'readonly').objectStore(STORE).getAll();
+r.onsuccess=()=>res(r.result||[]);
+r.onerror=()=>rej(r.error);
+});
+}
+
+async function dbPut(item){
+let d=await dbOpen();
+return new Promise((res,rej)=>{
+let r=d.transaction(STORE,'readwrite').objectStore(STORE).put(item);
+r.onsuccess=()=>res();
+r.onerror=()=>rej(r.error);
+});
+}
+
+async function dbDel(id){
+let d=await dbOpen();
+return new Promise((res,rej)=>{
+let r=d.transaction(STORE,'readwrite').objectStore(STORE).delete(id);
+r.onsuccess=()=>res();
+r.onerror=()=>rej(r.error);
+});
+}
+
+function users(){
+try{return JSON.parse(localStorage.getItem('xb_demo_users')||'{}')}
+catch{return {}}
+}
+
+function setUser(u){
+currentUser=u;
+localStorage.setItem('xb_demo_session',u);
+updateHeader();
+}
+
+function updateHeader(){
+document.getElementById('accountArea').innerHTML=
+currentUser
+? `<button onclick="view('profile')">👤 ${esc(currentUser)}</button> <button onclick="logout()">Logout</button>`
+: `<button onclick="showAuth()">Login / Sign up</button>`;
+}
+
+function esc(s){
+return String(s||'').replace(/[&<>"']/g,c=>({
+'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+}[c]));
+}
+
+function view(which,btn){
+if(btn){
+document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));
+btn.classList.add('active');
+}
+if(which==='home')home();
+if(which==='upload')upload();
+if(which==='profile')profile();
+if(which==='myvideos')myvideos();
+}
+
+function showAuth(){
+app.innerHTML=`
+<section class="panel">
+<h2>Welcome</h2>
+<p class="muted">Create a demo account or log in. This account exists only in this browser.</p>
+
+<div class="field">
+<label>Username</label>
+<input id="username" autocomplete="username" placeholder="Choose username">
+</div>
+
+<div class="field">
+<label>Password (demo only)</label>
+<input id="password" type="password" autocomplete="current-password" placeholder="Password">
+</div>
+
+<div class="row">
+<button onclick="signup()">Create account</button>
+<button onclick="login()">Login</button>
+</div>
+
+<p class="muted">By creating an account you confirm you are 18 or older. Do not use a real password in this demo.</p>
+
+<div class="notice">
+Demo note: This is not secure authentication. The credentials are stored locally in your browser and are not connected to a server.
+</div>
+</section>`;
+}
+
+function signup(){
+let u=document.getElementById('username').value.trim();
+let p=document.getElementById('password').value;
+
+if(!u||!p){
+alert('Username and password enter karo');
+return;
+}
+
+if(!confirm('Confirm that you are 18 or older?'))return;
+
+let us=users();
+
+if(us[u]){
+alert('Username already exists');
+return;
+}
+
+us[u]={password:p,created:Date.now()};
+localStorage.setItem('xb_demo_users',JSON.stringify(us));
+setUser(u);
+profile();
+}
+
+function login(){
+let u=document.getElementById('username').value.trim();
+let p=document.getElementById('password').value;
+let us=users();
+
+if(!us[u]||us[u].password!==p){
+alert('Login details match nahi hue');
+return;
+}
+
+setUser(u);
+home();
+}
+
+function logout(){
+currentUser=null;
+localStorage.removeItem('xb_demo_session');
+updateHeader();
+home();
+}
+
+function upload(){
+if(!currentUser){
+showAuth();
+return;
+}
+
+app.innerHTML=`
+<section class="panel">
+<h2>Upload video</h2>
+<p class="muted">Choose a video from your device. This demo stores it locally in this browser.</p>
+
+<div class="field">
+<label>Video file</label>
+<input type="file" id="file" accept="video/*">
+</div>
+
+<div class="field">
+<label>Title</label>
+<input id="title" maxlength="120" placeholder="Video title">
+</div>
+
+<div class="field">
+<label>Description</label>
+<textarea id="desc" maxlength="1000" placeholder="Add a description"></textarea>
+</div>
+
+<div class="field">
+<label>Category</label>
+<select id="category">
+<option>General</option>
+<option>Lifestyle</option>
+<option>Stories</option>
+<option>Entertainment</option>
+<option>Other</option>
+</select>
+</div>
+
+<div class="field">
+<label><input type="checkbox" id="rights"> I own this video or have permission to upload and share it.</label>
+</div>
+
+<div class="field">
+<label><input type="checkbox" id="consent"> All people depicted are adults (18+) and have consented to this recording and sharing.</label>
+</div>
+
+<button onclick="saveUpload()">Upload to local demo</button>
+
+<div class="notice">
+Local prototype only: upload is not sent to a public website. Use only content you have rights to; no non-consensual or underage content.
+</div>
+</section>`;
+}
+
+async function saveUpload(){
+let f=document.getElementById('file').files[0];
+let title=document.getElementById('title').value.trim();
+
+if(!f||!title){
+alert('Video file aur title zaroori hai');
+return;
+}
+
+if(!document.getElementById('rights').checked||
+!document.getElementById('consent').checked){
+alert('Rights and adult consent checkboxes confirm karo');
+return;
+}
+
+if(!f.type.startsWith('video/')){
+alert('Video file choose karo');
+return;
+}
+
+let item={
+id:crypto.randomUUID(),
+user:currentUser,
+title,
+desc:document.getElementById('desc').value,
+category:document.getElementById('category').value,
+file:f,
+created:Date.now(),
+likes:[],
+comments:[]
+};
+
+try{
+await dbPut(item);
+alert('Demo upload saved in this browser!');
+myvideos();
+}
+catch(e){
+alert('Browser storage limit reached or upload failed: '+e.message);
+}
+}
+
+async function home(){
+let vids=await dbAll();
+vids.sort((a,b)=>b.created-a.created);
+
+if(activeSearch){
+vids=vids.filter(v=>
+(v.title+' '+v.user+' '+v.category)
+.toLowerCase().includes(activeSearch.toLowerCase()));
+}
+
+app.innerHTML=`
+<section class="hero">
+<h1>Creator community demo</h1>
+<p>Sign up, create a profile, upload local video files, and browse the demo feed.</p>
+</section>
+<h2>Latest videos</h2>
+${renderCards(vids)}
+`;
+}
+
+function renderCards(vids,own=false){
+if(!vids.length)return `<div class="empty">No videos here yet.</div>`;
+
+return `
+<div class="grid">
+${vids.map(v=>`
+<article class="video-card">
+<div class="preview" id="preview-${v.id}">
+<span class="play">▶</span>
+</div>
+
+<div class="details">
+<strong>${esc(v.title)}</strong>
+<small>@${esc(v.user)} · ${esc(v.category)}</small>
+<div class="tag">Local demo upload</div>
+
+<div class="actions">
+<button onclick="playVideo('${v.id}')">Play</button>
+<button onclick="likeVideo('${v.id}')">♡ ${v.likes?.length||0}</button>
+<button onclick="commentVideo('${v.id}')">Comment</button>
+${own?`<button onclick="deleteVideo('${v.id}')">Delete</button>`:''}
+</div>
+</div>
+</article>
+`).join('')}
+</div>`;
+}
+
+async function playVideo(id){
+let vids=await dbAll();
+let v=vids.find(x=>x.id===id);
+if(!v)return;
+
+let p=document.getElementById('preview-'+id);
+if(p){
+let url=URL.createObjectURL(v.file);
+p.innerHTML=`<video controls autoplay src="${url}"></video>`;
+}
+}
+
+async function likeVideo(id){
+if(!currentUser){
+showAuth();
+return;
+}
+
+let vids=await dbAll();
+let v=vids.find(x=>x.id===id);
+if(!v)return;
+
+v.likes=v.likes||[];
+v.likes=v.likes.includes(currentUser)
+?v.likes.filter(u=>u!==currentUser)
+:[...v.likes,currentUser];
+
+await dbPut(v);
+home();
+}
+
+async function commentVideo(id){
+if(!currentUser){
+showAuth();
+return;
+}
+
+let text=prompt('Comment likho');
+if(!text?.trim())return;
+
+let vids=await dbAll();
+let v=vids.find(x=>x.id===id);
+
+v.comments=v.comments||[];
+v.comments.push({
+user:currentUser,
+text:text.trim(),
+date:Date.now()
+});
+
+await dbPut(v);
+alert('Comment saved in demo');
+}
+
+async function myvideos(){
+if(!currentUser){
+showAuth();
+return;
+}
+
+let vids=(await dbAll())
+.filter(v=>v.user===currentUser)
+.sort((a,b)=>b.created-a.created);
+
+app.innerHTML=`<h2>My Videos</h2>${renderCards(vids,true)}`;
+}
+
+async function deleteVideo(id){
+if(!confirm('Delete this demo upload?'))return;
+await dbDel(id);
+myvideos();
+}
+
+async function profile(){
+if(!currentUser){
+showAuth();
+return;
+}
+
+let vids=(await dbAll()).filter(v=>v.user===currentUser);
+
+app.innerHTML=`
+<section class="panel">
+<div class="profilehead">
+<div class="avatar">${esc(currentUser[0].toUpperCase())}</div>
+<div>
+<h2 style="margin:0">@${esc(currentUser)}</h2>
+<small class="muted">Creator demo profile</small>
+</div>
+</div>
+
+<p>${vids.length} local video(s)</p>
+<button onclick="upload()">＋ Upload video</button>
+<button onclick="myvideos()">Manage my videos</button>
+
+<div class="notice">
+Profile and uploads are stored only in this browser. They are not publicly visible.
+</div>
+</section>`;
+}
+
+function doSearch(e){
+e.preventDefault();
+activeSearch=document.getElementById('search').value.trim();
+home();
+}
+
+updateHeader();
+home();
+</script>
+</body>
+</html>
